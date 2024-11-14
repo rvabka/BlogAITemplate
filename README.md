@@ -7,7 +7,7 @@ This tool allows you to generate structured HTML code based on the content of an
 ## Prerequisites
 
 - **OpenAI API Key** – make sure you have your API key.
-- **Text file with the article** – paste the content of the article into the `article.txt` file.
+- **Text file with the article** – paste the content of the article into the `tekstArtykulu.txt` file.
 
 ---
 
@@ -18,8 +18,8 @@ This tool allows you to generate structured HTML code based on the content of an
 Copy the code below and run it in the terminal:
 
 ```bash
-git clone <repository_url>
-cd <repository_name>
+git clone https://github.com/rvabka/zadanieOxido
+cd zadanieOxido
 ```
 
 ### 2. Installing dependencies
@@ -35,12 +35,14 @@ npm install
 In the `main.js` file, find the place marked for entering the key and input your OpenAI API key:
 
 ```javascript
-const apiKey = "YOUR_API_KEY";
+const API_KEY = new OpenAI({
+  apiKey: "YOUR_API_KEY"
+});
 ```
 
 ### 4. Preparing the article content
 
-In the `article.txt` file, paste the content of the article you want to send to the API.
+In the `tekstArtykulu.txt` file, paste the content of the article you want to send to the API.
 
 ### 5. Running the application
 
@@ -58,9 +60,8 @@ The generated `artykul.html` file will be saved in the working directory. You wi
 
 ## File Structure
 
-- `main.js` – the main application file, connecting to the OpenAI API, sending data, and saving the resulting HTML.
-- `template-generator.js` – the main template file of the application, generating the files: `podglad.html` and `szablon.html`.
-- `article.txt` – the file with the article content.
+- `main.js` – the main application file, connecting to the OpenAI API, sending data, and saving the resulting HTML (`podglad.html`, `artykul.html`).
+- `tekstArtykulu.txt` – txt file with the article content.
 - `artykul.html` – the generated HTML file with the article.
 - `szablon.html` – an optional template file for previewing the article.
 - `podglad.html` – an optional full preview of the article.
@@ -71,7 +72,7 @@ The generated `artykul.html` file will be saved in the working directory. You wi
 
 To generate HTML from an article, follow these steps:
 
-1. Place the article content in the `article.txt` file.
+1. Place the article content in the `tekstArtykulu.txt` file.
 2. Enter the API key in the `main.js` file.
 3. Run `node main.js`.
 
@@ -81,4 +82,4 @@ The ready HTML file can be found under the name `artykul.html` in the working di
 
 ## Notes
 
-If you want to customize the formatting, you can modify the `template-generator.js` file to adjust the style and preview of the generated article.
+If you want to customize the formatting, you can modify the `szablon.html` file to adjust the style and preview of the generated article.

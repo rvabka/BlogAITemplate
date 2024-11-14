@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from "fs";
-import { saveTemplate, createPreview } from "./template-generator.js";
+import { join, resolve } from "path";
 import OpenAI from "openai";
 
 const API_KEY = new OpenAI({
@@ -15,15 +15,18 @@ function readArticleFromFile(filePath) {
   }
 }
 
+// Function to save HTML content to a file
 function saveFileToHTML(htmlFile) {
   try {
-    writeFileSync("article.html", htmlFile);
+    writeFileSync("artykul.html", htmlFile);
+    console.log("Successfully saved artykul.html");
   } catch (error) {
     console.error("Something went wrong while saving the article ", error);
     throw error;
   }
 }
 
+// Function to process article content with AI and convert it to HTML
 async function processArticleWithAI(articleContent) {
   const userPrompt = `
     Przekształć poniższy artykuł na kod HTML zgodnie z poniższymi wytycznymi:
@@ -68,20 +71,36 @@ async function processArticleWithAI(articleContent) {
 
     return completion.choices[0].message.content;
   } catch (error) {
-    console.error(
-      "Something went wrong while processing the article with AI ",
-      error
-    );
+    console.error("Something went wrong while processing the article with AI ", error);
     throw error;
   }
 }
 
+// Function to create a preview HTML file from the article content
+function createPreview(articleContent) {
+  const __dirname = resolve();
+  const templatePath = join(__dirname, "szablon.html");
+  const templateHtml = readFileSync(templatePath, "utf-8");
+
+  try {
+    const previewHtml = templateHtml.replace(
+      '<div class="article-content">',
+      `<div class="article-content">\n${articleContent}`
+    );
+
+    writeFileSync("podglad.html", previewHtml);
+    console.log("Successfully saved podglad.html");
+  } catch (error) {
+    console.error("Error creating preview:", error);
+  }
+}
+
+// Main function to read article, process it with AI, and create a preview
 async function main() {
   try {
-    const articleContent = readArticleFromFile("article.txt");
+    const articleContent = readArticleFromFile("tekstArtykulu.txt");
     const htmlContent = await processArticleWithAI(articleContent);
     saveFileToHTML(htmlContent);
-    saveTemplate();
     createPreview(htmlContent);
   } catch (error) {
     console.error("Something went wrong while processing the article ", error);
